@@ -1,151 +1,112 @@
 "use client"
 
-import { useState, useEffect } from "react";
-import axios from "axios";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
+  FormLabel,
+  FormControl,
+  Input,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Container,
+  VStack,
+  Box,
+  useToast,
   HStack,
-} from "@chakra-ui/react";
-
-const TableProduct = () => {
-  const [pelangganData, setPelangganData] = useState([]);
-  const [selectedPelanggan, setSelectedPelanggan] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/api/detail");
-        setPelangganData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetchData();
-    }, 5000);
-    return () => clearInterval(intervalId);
-  }, []);
   
-  const handleViewDetail = (pelanggan) => {
-    setSelectedPelanggan(pelanggan);
-    setIsModalOpen(true);
-  };
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { axiosFetcher } from "@/app/lib/axiosIntance";
+const AddProduct = () => {
+  const [nama_produk, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
-  const handleCloseModal = () => {
-    setSelectedPelanggan(null);
-    setIsModalOpen(false);
-  };
-
-  const handleDeletePelanggan = async (id) => {
+  const handleSubmit = async () => {
+    setIsLoading(true);
     try {
-      await axios.delete("/api/crud/deleteOrder");
-      setPelangganData(pelangganData.filter((order) => order.id !== id));
+      const response = await axiosFetcher.post("/api/product", {
+        nama_produk,
+        price,
+        quantity,
+      });
+      console.log(response.data);
+
+      if (response) {
+        toast({
+          title: "Product added successfully",
+          description: "The product has been added to the inventory",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        setName("");
+        setPrice("");
+        setQuantity("");
+      } else {
+        toast({
+          title: "Product addition failed",
+          description: "An error occurred while adding the product",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        setName("");
+        setPrice("");
+        setQuantity("");
+      }
     } catch (error) {
-      console.error("Error deleting pelanggan:", error);
+      console.error("Error adding product:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <>
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th>Pelanggan ID</Th>
-            <Th>Nama Pelanggan</Th>
-            <Th>Alamat Pelanggan</Th>
-            <Th>No. Telpon</Th>
-            <Th>Action</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {pelangganData.map((pelanggan) => (
-            <Tr key={pelanggan.id}>
-              <Td>{pelanggan.id}</Td>
-              <Td>{pelanggan.nama_pelanggan}</Td>
-              <Td>{pelanggan.alamat_pelanggan}</Td>
-              <Td>{pelanggan.no_telpon}</Td>
-              <Td>
-                <HStack spacing={2}>
-                  <Button onClick={() => handleViewDetail(pelanggan)}>
-                    View Detail
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => handleDeletePelanggan(pelanggan.id)}
-                  >
-                    Delete
-                  </Button>
-                </HStack>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Pelanggan & Order Detail</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {selectedPelanggan && (
-              <>
-                <p>Pelanggan ID: {selectedPelanggan.id}</p>
-                <p>Nama Pelanggan: {selectedPelanggan.nama_pelanggan}</p>
-                <p>Alamat Pelanggan: {selectedPelanggan.alamat_pelanggan}</p>
-                <p>No. Telpon: {selectedPelanggan.no_telpon}</p>
-                <p>Order:</p>
-                <Table variant="simple">
-                  <Thead>
-                    <Tr>
-                      <Th>Order ID</Th>
-                      <Th>Product ID</Th>
-                      <Th>Quantity</Th>
-                      <Th>Total</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {selectedPelanggan.order.map((order) => (
-                      <Tr key={order.id}>
-                        <Td>{order.id}</Td>
-                        <Td>{order.productId}</Td>
-                        <Td>{order.quantity}</Td>
-                        <Td>{order.total}</Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" onClick={handleCloseModal}>
-              Close
+    <Box p={4}>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <VStack spacing={4}>
+          <FormControl>
+            <FormLabel>Product Name</FormLabel>
+            <Input
+              type="text"
+              placeholder="Enter product name"
+              value={nama_produk}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Product Price</FormLabel>
+            <Input
+              type="text"
+              placeholder="Enter product name"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Quantity</FormLabel>
+            <Input
+              type="number"
+              placeholder="Enter product price"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+          </FormControl>
+          <HStack>
+            <Button
+              type="submit"
+              colorScheme="blue"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+            >
+              Add Product
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+          </HStack>
+        </VStack>
+      </form>
+    </Box>
   );
 };
 
-export default TableData;
+export default AddProduct;

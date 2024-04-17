@@ -44,7 +44,7 @@ export async function POST (req){
         await prisma.product.update({
           where: { id: productId },
           data: {
-            quantity: product.quantity - quantity,
+            quantity: `${product.quantity - quantity}`
           },
         });
   

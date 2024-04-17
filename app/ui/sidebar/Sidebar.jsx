@@ -32,6 +32,7 @@ import {
   FiBell,
   FiChevronDown,
   FiPlus,
+  FiSmile
 } from "react-icons/fi";
 import TableData from "../../components/tableData/Data";
 
@@ -39,6 +40,7 @@ const LinkItems = [
   { name: "Dashboard", path: "/dashboard", icon: FiHome },
   { name: "Product", path: "/dashboard/produk", icon: FiTrendingUp },
   { name: "Sales", path: "/dashboard/sales", icon: FiPlus },
+  { name: "Users", path: "/dashboard/users", icon: FiSmile },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -159,7 +161,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 >
                   <Text fontSize="sm">bisena</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Petugas
+                    Admin
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -180,13 +182,14 @@ const MobileNav = ({ onOpen, ...rest }) => {
   );
 };
 
-const SidebarWithHeader = ({ children }) => {
+const SidebarWithHeader = ({ children, userRole }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
         <SidebarContent
+          roles={userRole === "Admin" ? ["Admin"] : ["Employee"]}
           onClose={() => onClose}
           display={{ base: "none", md: "block" }}
         />

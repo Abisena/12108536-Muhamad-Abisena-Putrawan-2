@@ -1,0 +1,344 @@
+"use client";
+
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  VStack,
+  useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import axios from "axios";
+
+const CreateProductForm = () => {
+  const [nama_produk, setNama] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toast = useToast();
+
+  const HandleTambah = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post("/api/produk", {
+        nama_produk,
+        price: parseInt(price),
+        quantity,
+      });
+      console.log(response.data);
+      toast({
+        title: "Product added successfully",
+        description: "You can buy the product",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setNama("");
+      setPrice(0);
+      setQuantity(0);
+      closeModal();
+    } catch (error) {
+      console.error("Error adding product:", error);
+      toast({
+        title: "Product addition failed",
+        description: "An error occurred while adding the product",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <>
+      <Button colorScheme="blue" onClick={openModal}>
+        Add Product
+      </Button>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add Product</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4} width="100%" maxW="md" mx="auto">
+              <FormControl id="nama_produk">
+                <FormLabel>Name Product</FormLabel>
+                <Input
+                  type="text"
+                  value={nama_produk}
+                  onChange={(e) => setNama(e.target.value)}
+                  placeholder="Enter product name"
+                />
+              </FormControl>
+              <FormControl id="price">
+                <FormLabel>Price</FormLabel>
+                <Input
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(parseFloat(e.target.value))}
+                  placeholder="Enter product price"
+                />
+              </FormControl>
+              <FormControl id="quantity">
+                <FormLabel>Quantity</FormLabel>
+                <Input
+                  type="number"
+                  value={quantity}
+                  onChange={(e) => setQuantity(parseInt(e.target.value))}
+                  placeholder="Enter product quantity"
+                />
+              </FormControl>
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              onClick={HandleTambah}
+              isLoading={isLoading}
+            >
+              Add Product
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
+
+export default CreateProductForm;
+
+
+
+
+/////////////////////////////////////
+
+
+
+"use client"
+
+import {
+  Input,
+  Button,
+  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useToast,
+  HStack,
+  VStack, 
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { axiosFetcher } from "@/app/lib/axiosIntance";
+
+
+const AddProduct = () => {
+  const [data, setData] = useState([])
+  const [nama_produk, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/product");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const fetchData = async () => {
+    try {
+        const response = await axios.get("/api/product");
+        setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axiosFetcher.post("/api/product", {
+        nama_produk,
+        price,
+        quantity,
+      });
+      console.log(response.data);
+
+      if (response) {
+        toast({
+          title: "Product added successfully",
+          description: "The product has been added to the inventory",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        setName("");
+        setPrice("");
+        setQuantity("");
+      } else {
+        toast({
+          title: "Product addition failed",
+          description: "An error occurred while adding the product",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        setName("");
+        setPrice("");
+        setQuantity("");
+      }
+    } catch (error) {
+      console.error("Error adding product:", error);
+    } finally {
+      setIsLoading(false);
+    }
+    
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
+  return (
+
+    <>
+     <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>Produck ID</Th>
+            <Th>Nama Produk</Th>
+            <Th>Price</Th>
+            <Th>Quantity</Th>
+            <Th>Action</Th>
+          </Tr>
+        </Thead>
+        {Array.isArray(data) && data.map((datas) => (
+          <Tr key={datas.id}>
+            <Td>{datas.id}</Td>
+            <Td>{datas.nama_produk}</Td>
+            <Td>{datas.price}</Td>
+            <Td>{datas.quantity}</Td>
+            <Td>
+              <HStack spacing={2}>
+                <Button onClick={() => handleViewDetail(user)}>
+                  View Detail
+                </Button>
+                <Button
+                  colorScheme="red"
+                  onClick={() => handleDeletePelanggan(user.id)}
+                >
+                  Delete
+                </Button>
+              </HStack>
+            </Td>
+          </Tr>
+        ))}
+      </Table>
+
+      <Button colorScheme="blue" onClick={openModal}>
+        Add Account
+      </Button>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add Account</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4} width="100%" maxW="md" mx="auto">
+              <FormControl id="Email">
+                <FormLabel>Email</FormLabel>
+                <Input
+                  type="email"
+                  value={nama_produk}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter Email"
+                />
+              </FormControl>
+              <FormControl id="price">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="Enter Password"
+                />
+              </FormControl>
+              <FormControl id="price">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  placeholder="Enter Password"
+                />
+              </FormControl>
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+            >
+              Add Product
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
+
+export default AddProduct;

@@ -84,21 +84,20 @@ export async function PUT(req){
 
 export async function DELETE(req){
   try {
-    const getData = await req.json();
-    const { id } = getData;
+    const delData = await req.json();
+    const { id } = delData;
 
     if (!id) {
-      console.log(id);
-      throw new Error("ID is missing in the request body");
+      return { status: 400, msg: "Invalid" };
     }
 
-    const delProduct = await db_cashier.product.delete({
+    const deletedData = await db_cashier.product.delete({
       where: {
-        id: parseInt(id),
+        id
       },
     });
 
-    return new Response(JSON.stringify(delProduct), {
+    return new Response(JSON.stringify(deletedData), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

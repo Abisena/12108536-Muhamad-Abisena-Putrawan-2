@@ -9,7 +9,7 @@ export async function GET(req) {
         })
 
         return new Response(
-            JSON.stringify({ success: true, getData }),
+            JSON.stringify(getData),
             {
               status: 200,
               headers: {
