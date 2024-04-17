@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Sales {
+  id          Int       @id @default(autoincrement())
+  productId   Int
+  pelangganId Int
+  quantity    Int
+  total       Float
+  status      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  product     Product   @relation(fields: [productId], references: [id])
+  pelanggan   Costumer @relation(fields: [pelangganId], references: [id])
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  nama_produk String
+  price       Int
+  quantity    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  sales       Sales[]
+}
+
+model Users {
+  id           String   @id @default(uuid())
+  username     String
+  email        String   @unique
+  password     String
+  refreshToken String?  @unique
+  role         String   @default("Petugas")
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+}
+
+model Costumer {
+  id               Int      @id @default(autoincrement())
+  nama_pelanggan   String
+  alamat_pelanggan String
+  no_telpon        Int
+  sales            Sales[]
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+}
