@@ -3,12 +3,12 @@ import { db_cashier } from "../db";
 export async function POST(req) {
   try {
     const requestData = await req.json();
-    const { username, email, password } = requestData;
+    const { email, password } = requestData;
     const createData = await db_cashier.users.create({
       data: {
-        username: username,
         email: email,
         password: password,
+        role: "Employee",
       },
     });
 
@@ -24,8 +24,7 @@ export async function POST(req) {
       status: 500,
     });
   }
-};
-
+}
 
 export async function GET() {
   try {
@@ -43,21 +42,21 @@ export async function GET() {
       status: 500,
     });
   }
-};
+}
 
 export async function PUT(req) {
   try {
-    const reqData = req.json()
-    const { id } = reqData
+    const reqData = req.json();
+    const { id } = reqData;
     const createData = await db_cashier.users.update({
       where: {
-        id
+        id,
       },
 
       data: {
         email,
-        password
-      }
+        password,
+      },
     });
 
     return new Response(JSON.stringify(createData), {
@@ -72,17 +71,16 @@ export async function PUT(req) {
       status: 500,
     });
   }
-};
-
+}
 
 export async function DELETE(req) {
   try {
-    const reqData = req.json()
-    const { id } = reqData
+    const { id } = req.params;
+    console.log(id);
     const deleteData = await db_cashier.users.delete({
       where: {
-        id
-      }
+        id: id,
+      },
     });
 
     return new Response(JSON.stringify(deleteData), {
@@ -97,5 +95,4 @@ export async function DELETE(req) {
       status: 500,
     });
   }
-};
-
+}

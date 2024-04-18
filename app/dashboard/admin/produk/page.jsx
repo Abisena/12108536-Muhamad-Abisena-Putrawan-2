@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   FormLabel,
@@ -9,7 +9,6 @@ import {
   Box,
   useToast,
   HStack,
-  
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { axiosFetcher } from "@/app/lib/axiosIntance";

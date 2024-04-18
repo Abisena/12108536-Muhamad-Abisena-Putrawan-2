@@ -1,10 +1,10 @@
 import React from "react";
-
+import SidebarEmploye from "../../ui/sidebarEmploye/Sidebar";
 
 const Layout = ({ children }) => {
   return (
     <>
-     {children}
+      <SidebarEmploye>{children}</SidebarEmploye>
     </>
   );
 };

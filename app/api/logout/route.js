@@ -1,14 +1,6 @@
-import { db_cashier } from "../db";
-
-export async function GET(req) {
+export async function POST(req) {
   try {
-    const getData = await db_cashier.costumer.findMany({
-      include: {
-        sales: true,
-      },
-    });
-
-    return new Response(JSON.stringify(getData), {
+    return new Response(JSON.stringify({ message: "Logout successful" }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

@@ -10,9 +10,7 @@ import {
   VStack,
   Container,
   Box,
-  Spacer,
   useToast,
-  useColorMode,
   Flex,
   chakra,
 } from "@chakra-ui/react";
@@ -30,7 +28,7 @@ const FormLogin = () => {
       const response = await axios.post("/api/login", { email, password });
       console.log(response.data);
 
-      if (response) {
+      if (response.data.success) {
         toast({
           title: "Login successful",
           description: "You have been logged in successfully",
@@ -40,7 +38,11 @@ const FormLogin = () => {
         });
 
         setTimeout(() => {
-          window.location.assign("/dashboard");
+          window.location.assign(
+            response.data.user.role === "Admin"
+              ? "/dashboard/admin"
+              : "/dashboard/employe"
+          );
         }, 1500);
 
         setEmail("");
@@ -48,7 +50,8 @@ const FormLogin = () => {
       } else {
         toast({
           title: "Login failed",
-          description: "You do not have a valid account to log in.",
+          description:
+            response.data.error || "An error occurred while logging in",
           status: "error",
           duration: 3000,
           isClosable: true,
@@ -56,7 +59,6 @@ const FormLogin = () => {
 
         setEmail("");
         setPassword("");
-
       }
     } catch (error) {
       console.error("Error logging in:", error);
@@ -67,7 +69,6 @@ const FormLogin = () => {
         duration: 3000,
         isClosable: true,
       });
-      window.location.assign("/404");
     } finally {
       setIsLoading(false);
     }

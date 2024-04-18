@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -18,8 +18,9 @@ import {
   ModalBody,
   ModalFooter,
   Container,
-  HStack, // Tambahkan import HStack untuk mengelompokkan tombol
+  HStack,
 } from "@chakra-ui/react";
+import ExportToExcelButton from "../button/ButtonExcel";
 
 const TableData = () => {
   const [dataPelanggan, setPelangganData] = useState([]);
@@ -48,9 +49,9 @@ const TableData = () => {
 
   const fetchData = async () => {
     try {
-        const response = await axios.get("/api/detail");
-        // const data = await response.json();
-        setPelangganData(response.data);
+      const response = await axios.get("/api/detail");
+      // const data = await response.json();
+      setPelangganData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -87,27 +88,29 @@ const TableData = () => {
             <Th>Action</Th>
           </Tr>
         </Thead>
-        {Array.isArray(dataPelanggan) && dataPelanggan.map((pelanggan) => (
-  <Tr key={pelanggan.id}>
-    <Td>{pelanggan.id}</Td>
-    <Td>{pelanggan.nama_pelanggan}</Td>
-    <Td>{pelanggan.alamat_pelanggan}</Td>
-    <Td>{pelanggan.no_telpon}</Td>
-    <Td>
-      <HStack spacing={2}>
-        <Button onClick={() => handleViewDetail(pelanggan)}>
-          View Detail
-        </Button>
-        <Button
-          colorScheme="red"
-          onClick={() => handleDeletePelanggan(pelanggan.id)}
-        >
-          Delete
-        </Button>
-      </HStack>
-    </Td>
-  </Tr>
-))}
+        {Array.isArray(dataPelanggan) &&
+          dataPelanggan.map((pelanggan) => (
+            <Tr key={pelanggan.id}>
+              <Td>{pelanggan.id}</Td>
+              <Td>{pelanggan.nama_pelanggan}</Td>
+              <Td>{pelanggan.alamat_pelanggan}</Td>
+              <Td>{pelanggan.no_telpon}</Td>
+              <Td>
+                <HStack spacing={2}>
+                  <Button onClick={() => handleViewDetail(pelanggan)}>
+                    View Detail
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => handleDeletePelanggan(pelanggan.id)}
+                  >
+                    Delete
+                  </Button>
+                  {/* <ExportToExcelButton /> */}
+                </HStack>
+              </Td>
+            </Tr>
+          ))}
       </Table>
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>

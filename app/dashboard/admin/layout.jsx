@@ -1,10 +1,10 @@
 import React from "react";
-
+import SidebarAdmin from "../../ui/sidebarAdmin/Sidebar";
 
 const Layout = ({ children }) => {
   return (
     <>
-     {children}
+      <SidebarAdmin>{children}</SidebarAdmin>
     </>
   );
 };

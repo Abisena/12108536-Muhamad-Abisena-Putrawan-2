@@ -30,14 +30,14 @@ model Product {
   id          Int      @id @default(autoincrement())
   nama_produk String
   price       String
-  quantity    Int
+  quantity    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
   sales       Sales[]
 }
 
 model Users {
-  id           String   @id @default(uuid())
+  id           Int   @id @default(autoincrement())
   email        String   @unique
   password     String
   refreshToken String?  @unique

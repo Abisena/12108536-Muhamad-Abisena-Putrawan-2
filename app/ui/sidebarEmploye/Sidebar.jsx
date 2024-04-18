@@ -14,33 +14,17 @@ import {
   Drawer,
   DrawerContent,
   useDisclosure,
-  BoxProps,
-  FlexProps,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-  FiPlus,
-  FiSmile
-} from "react-icons/fi";
+import { FiHome, FiMenu, FiBell, FiChevronDown, FiPlus } from "react-icons/fi";
 import TableData from "../../components/tableData/Data";
 
 const LinkItems = [
-  { name: "Dashboard", path: "/dashboard", icon: FiHome },
-  { name: "Product", path: "/dashboard/produk", icon: FiTrendingUp },
-  { name: "Sales", path: "/dashboard/sales", icon: FiPlus },
-  { name: "Users", path: "/dashboard/users", icon: FiSmile },
+  { name: "Dashboard", path: "/dashboard/employe", icon: FiHome },
+  { name: "Sales", path: "/dashboard/employe/sales", icon: FiPlus },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -61,7 +45,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-     
+
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon} to={link.path}>
           {link.name}
@@ -159,9 +143,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">bisena</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    Employe
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -182,7 +165,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   );
 };
 
-const SidebarWithHeader = ({ children, userRole }) => {
+const SidebarEmploye = ({ children, userRole }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -216,4 +199,4 @@ const SidebarWithHeader = ({ children, userRole }) => {
   );
 };
 
-export default SidebarWithHeader;
+export default SidebarEmploye;

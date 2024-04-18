@@ -1,14 +1,30 @@
-"use client"
+import SidebarAdmin from "../../ui/sidebarAdmin/Sidebar";
+import SidebarEmployee from "../../ui/sidebarEmployee/Sidebar";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { auth } from "../middleware/authMiddleware";
 
-import React from "react";
-import TableData from "../components/tableData/Data";
+const Dashboard = () => {
+  const router = useRouter();
 
-const Hello = () => {
+  useEffect(() => {
+    auth("Admin")(null, null, () => {
+      router.push("/dashboard/admin");
+    });
+    auth("Employee")(null, null, () => {
+      router.push("/dashboard/employee");
+    });
+  }, []);
+
   return (
-    <>
-        <TableData/>
-    </>
+    <div>
+      {router.pathname === "/dashboard/admin" ? (
+        <SidebarAdmin />
+      ) : router.pathname === "/dashboard/employee" ? (
+        <SidebarEmployee />
+      ) : null}
+    </div>
   );
 };
 
-export default Hello;
+export default Dashboard;
