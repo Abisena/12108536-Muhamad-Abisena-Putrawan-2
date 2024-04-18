@@ -46,40 +46,49 @@ export async function GET() {
 
 export async function PUT(req) {
   try {
-    const reqData = req.json();
-    const { id } = reqData;
-    const createData = await db_cashier.users.update({
+    const data = await req.json();
+    const { id, email, password } = data;
+
+    const updateUsers = await db_cashier.users.update({
       where: {
         id,
       },
-
       data: {
         email,
         password,
       },
     });
 
-    return new Response(JSON.stringify(createData), {
-      status: 200,
+    return new Response(
+      JSON.stringify({
+        msg: "Succes to Update Product",
+        data: updateUsers,
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify({ msg: "Invalid Server" }), {
+      status: 500,
       headers: {
         "Content-Type": "application/json",
       },
-    });
-  } catch (error) {
-    console.error(error);
-    return new Response("Internal Server Error", {
-      status: 500,
     });
   }
 }
 
 export async function DELETE(req) {
   try {
-    const { id } = req.params;
+    const { id } = req.json();
     console.log(id);
     const deleteData = await db_cashier.users.delete({
       where: {
-        id: id,
+        id,
       },
     });
 

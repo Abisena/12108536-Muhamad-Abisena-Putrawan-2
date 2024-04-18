@@ -30,6 +30,7 @@ const CreateOrderForm = () => {
     no_telpon: 0,
     productId: 0,
     quantity: parseInt(0),
+    pembayaran: parseInt(0),
   });
   const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -70,6 +71,15 @@ const CreateOrderForm = () => {
         status: "success",
         duration: 3000,
         isClosable: true,
+      });
+
+      setFormData({
+        nama_pelanggan: "",
+        alamat_pelanggan: "",
+        no_telpon: 0,
+        productId: 0,
+        quantity: parseInt(0),
+        pembayaran: parseInt(0),
       });
     } catch (error) {
       console.error("Error creating order:", error);
@@ -153,6 +163,15 @@ const CreateOrderForm = () => {
                 type="number"
                 name="quantity"
                 value={formData.quantity}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Pembayaran</FormLabel>
+              <Input
+                type="number"
+                name="pembayaran"
+                value={formData.pembayaran}
                 onChange={handleChange}
               />
             </FormControl>

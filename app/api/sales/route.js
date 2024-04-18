@@ -1,12 +1,20 @@
 import { db_cashier } from "../db";
+
 export async function POST(req) {
   try {
     const jsonData = await req.json();
-    let { nama_pelanggan, alamat_pelanggan, no_telpon, productId, quantity } =
-      jsonData;
+    let {
+      nama_pelanggan,
+      alamat_pelanggan,
+      no_telpon,
+      productId,
+      quantity,
+      pembayaran,
+    } = jsonData;
 
     productId = parseInt(productId);
     quantity = parseInt(quantity);
+    pembayaran = parseFloat(pembayaran);
 
     const result = await db_cashier.$transaction(async (prisma) => {
       const pelangganResult = await prisma.costumer.create({
@@ -14,6 +22,7 @@ export async function POST(req) {
           nama_pelanggan,
           alamat_pelanggan,
           no_telpon,
+          pembayaran,
         },
       });
 
@@ -31,6 +40,11 @@ export async function POST(req) {
       }
 
       const total = product.price * quantity;
+      const kembali = pembayaran - total;
+
+      if (kembali < 0) {
+        throw new Error("Insufficient payment");
+      }
 
       const orderResult = await prisma.sales.create({
         data: {
@@ -38,6 +52,7 @@ export async function POST(req) {
           quantity,
           total,
           pelangganId,
+          kembali,
         },
       });
 
@@ -48,7 +63,7 @@ export async function POST(req) {
         },
       });
 
-      return { pelangganResult, orderResult };
+      return { pelangganResult, orderResult, kembali };
     });
 
     return new Response(JSON.stringify(result), {

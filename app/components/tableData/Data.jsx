@@ -21,6 +21,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import ExportToExcelButton from "../button/ButtonExcel";
+import DeleteUsers from "../delete/deleteUser";
 
 const TableData = () => {
   const [dataPelanggan, setPelangganData] = useState([]);
@@ -50,7 +51,6 @@ const TableData = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get("/api/detail");
-      // const data = await response.json();
       setPelangganData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -67,17 +67,10 @@ const TableData = () => {
     setIsModalOpen(false);
   };
 
-  const handleDeletePelanggan = async (id) => {
-    try {
-      await axios.delete("/api/sales");
-      setPelangganData(dataPelanggan.filter((order) => order.id !== id));
-    } catch (error) {
-      console.error("Error deleting pelanggan:", error);
-    }
-  };
-
   return (
     <>
+      <ExportToExcelButton />
+      {/* <DeleteUsers /> */}
       <Table variant="simple">
         <Thead>
           <Tr>
@@ -100,13 +93,12 @@ const TableData = () => {
                   <Button onClick={() => handleViewDetail(pelanggan)}>
                     View Detail
                   </Button>
-                  <Button
+                  {/* <Button
                     colorScheme="red"
                     onClick={() => handleDeletePelanggan(pelanggan.id)}
                   >
                     Delete
-                  </Button>
-                  {/* <ExportToExcelButton /> */}
+                  </Button> */}
                 </HStack>
               </Td>
             </Tr>
@@ -125,6 +117,7 @@ const TableData = () => {
                 <p>Nama Pelanggan: {selectedPelanggan.nama_pelanggan}</p>
                 <p>Alamat Pelanggan: {selectedPelanggan.alamat_pelanggan}</p>
                 <p>No. Telpon: {selectedPelanggan.no_telpon}</p>
+                <p>Pembayaran: {selectedPelanggan.pembayaran}</p>
                 <p>Order:</p>
                 <Table variant="simple">
                   <Thead>

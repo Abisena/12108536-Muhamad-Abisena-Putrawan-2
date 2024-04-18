@@ -35,6 +35,17 @@ import {
 } from "react-icons/fi";
 import TableData from "../../components/tableData/Data";
 
+const handleLogout = () => {
+  axios
+    .post("/api/logout")
+    .then(() => {
+      window.location.href = "/";
+    })
+    .catch((error) => {
+      console.error("Error logging out:", error);
+    });
+};
+
 const LinkItems = [
   { name: "Dashboard", path: "/dashboard/admin", icon: FiHome },
   { name: "Product", path: "/dashboard/admin/produk", icon: FiTrendingUp },
@@ -167,7 +178,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
-                  spacing="1px" 
+                  spacing="1px"
                   ml="2"
                 >
                   <Text fontSize="xs" color="gray.600">
@@ -183,7 +194,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={handleLogout}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

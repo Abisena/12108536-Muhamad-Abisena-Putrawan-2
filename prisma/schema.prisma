@@ -19,6 +19,7 @@ model Sales {
   pelangganId Int
   quantity    Int
   total       Float
+  kembali     Int
   status      String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -51,6 +52,7 @@ model Costumer {
   nama_pelanggan   String
   alamat_pelanggan String
   no_telpon        Int
+  pembayaran       Int
   sales            Sales[]
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt

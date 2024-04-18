@@ -21,6 +21,18 @@ import {
 } from "@chakra-ui/react";
 import { FiHome, FiMenu, FiBell, FiChevronDown, FiPlus } from "react-icons/fi";
 import TableData from "../../components/tableData/Data";
+import axios from "axios";
+
+const handleLogout = () => {
+  axios
+    .post("/api/logout")
+    .then(() => {
+      window.location.href = "/";
+    })
+    .catch((error) => {
+      console.error("Error logging out:", error);
+    });
+};
 
 const LinkItems = [
   { name: "Dashboard", path: "/dashboard/employe", icon: FiHome },
@@ -156,7 +168,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={handleLogout}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

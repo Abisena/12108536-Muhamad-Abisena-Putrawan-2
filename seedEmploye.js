@@ -2,12 +2,12 @@ import { PrismaClient } from "@prisma/client";
 import * as argon2 from "argon2";
 const seeder = new PrismaClient();
 async function seed(req) {
-  const hashedPassword = await argon2.hash("admin12345");
+  const hashedPassword = await argon2.hash("employe12345");
   const seedCreate = await seeder.users.create({
     data: {
-      email: "admin@gmail.com",
+      email: "employe@gmail.com",
       password: hashedPassword,
-      role: "Admin",
+      role: "Employee",
     },
   });
 
