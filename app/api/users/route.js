@@ -3,12 +3,13 @@ import { db_cashier } from "../db";
 export async function POST(req) {
   try {
     const requestData = await req.json();
-    const { email, password } = requestData;
+    const { username, email, password } = requestData;
     const createData = await db_cashier.users.create({
       data: {
+        username: username,
         email: email,
         password: password,
-        role: "Employee",
+        role: "Admin",
       },
     });
 

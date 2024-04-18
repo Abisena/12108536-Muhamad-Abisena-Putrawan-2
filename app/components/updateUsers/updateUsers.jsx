@@ -19,7 +19,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-export default function UpdateProduct() {
+export default function UpdateUsers() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     register,
@@ -32,9 +32,10 @@ export default function UpdateProduct() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.put(`/api/product`, {
-        id: data.id,
-        quantity: data.quantity,
+      const response = await axios.put(`/api/users`, {
+        id: parseInt(data.id),
+        email: data.email,
+        password: data.password,
       });
 
       if (response.status === 200) {
@@ -72,13 +73,13 @@ export default function UpdateProduct() {
   return (
     <>
       <Button onClick={onOpen} colorScheme="orange" m={2}>
-        Update Product
+        Update Users
       </Button>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Update Product</DrawerHeader>
+          <DrawerHeader>Update Users</DrawerHeader>
           <DrawerBody>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl isInvalid={errors.id}>
@@ -95,14 +96,28 @@ export default function UpdateProduct() {
                 </FormErrorMessage>
               </FormControl>
 
-              <FormControl isInvalid={errors.quantity}>
-                <FormLabel htmlFor="quantity">Quantity</FormLabel>
+              <FormControl isInvalid={errors.email}>
+                <FormLabel htmlFor="id">Email</FormLabel>
                 <Input
-                  id="quantity"
-                  name="quantity"
+                  id="email"
+                  name="email"
                   type="text"
-                  placeholder="Quantity"
-                  {...register("quantity", {
+                  placeholder="Email"
+                  {...register("email", { required: "ID is required" })}
+                />
+                <FormErrorMessage>
+                  {errors.id && errors.id.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl isInvalid={errors.password}>
+                <FormLabel htmlFor="password">Passowrd</FormLabel>
+                <Input
+                  id="password"
+                  name="password"
+                  type="text"
+                  placeholder="password"
+                  {...register("password", {
                     required: "Quantity is required",
                   })}
                 />

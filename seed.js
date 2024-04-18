@@ -5,6 +5,7 @@ async function seed(req) {
   const hashedPassword = await argon2.hash("admin12345");
   const seedCreate = await seeder.users.create({
     data: {
+      username: "admin",
       email: "admin@gmail.com",
       password: hashedPassword,
       role: "Admin",

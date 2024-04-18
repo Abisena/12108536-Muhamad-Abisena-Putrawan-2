@@ -58,7 +58,6 @@ export async function PUT(req) {
       where: {
         id: parseInt(id),
       },
-
       data: {
         quantity,
       },

@@ -10,9 +10,8 @@ const ExportUsersToExcel = () => {
       const data = response.data;
 
       const excelData = data.map((users) => ({
-        user_id: users.id,
+        username: users.username,
         email: users.email,
-        password: users.password,
       }));
 
       const worksheet = XLSX.utils.json_to_sheet(excelData);

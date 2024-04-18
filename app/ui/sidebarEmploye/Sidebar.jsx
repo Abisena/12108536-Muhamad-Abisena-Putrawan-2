@@ -36,7 +36,7 @@ const handleLogout = () => {
 
 const LinkItems = [
   { name: "Dashboard", path: "/dashboard/employe", icon: FiHome },
-  { name: "Sales", path: "/dashboard/employe/sales", icon: FiPlus },
+  { name: "Product", path: "/dashboard/employe/sales", icon: FiPlus },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {

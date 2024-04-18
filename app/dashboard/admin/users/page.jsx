@@ -6,6 +6,7 @@ import { Table, Thead, Tr, Th, Td } from "@chakra-ui/react";
 import AddAcount from "../../../components/createUsers/Create";
 import DeleteUsers from "../../../components/deleteUser/deleteUser";
 import ExportUsersToExcel from "@/app/componentS/exportUsers/usersExport";
+import UpdateUser from "../../../components/updateUsers/updateUsers";
 
 const TableData = () => {
   const [users, setUsers] = useState([]);
@@ -30,6 +31,7 @@ const TableData = () => {
         <Thead>
           <Tr>
             <Th>Users ID</Th>
+            <Th>USERNAME</Th>
             <Th>Email</Th>
             <Th>Role</Th>
             <Th>Action</Th>
@@ -39,9 +41,11 @@ const TableData = () => {
           users.map((user) => (
             <Tr key={user.id}>
               <Td>{user.id}</Td>
+              <Td>{user.username}</Td>
               <Td>{user.email}</Td>
               <Td>{user.role}</Td>
               <DeleteUsers id={user.id} />
+              <UpdateUser />
             </Tr>
           ))}
       </Table>
