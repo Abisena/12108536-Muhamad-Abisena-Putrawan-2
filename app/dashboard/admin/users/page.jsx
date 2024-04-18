@@ -5,6 +5,7 @@ import axios from "axios";
 import { Table, Thead, Tr, Th, Td } from "@chakra-ui/react";
 import AddAcount from "../../../components/createUsers/Create";
 import DeleteUsers from "../../../components/deleteUser/deleteUser";
+import ExportUsersToExcel from "@/app/componentS/exportUsers/usersExport";
 
 const TableData = () => {
   const [users, setUsers] = useState([]);
@@ -24,6 +25,7 @@ const TableData = () => {
   return (
     <>
       <AddAcount />
+      <ExportUsersToExcel />
       <Table variant="simple">
         <Thead>
           <Tr>
