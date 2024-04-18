@@ -1,6 +1,4 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Table,
@@ -21,7 +19,8 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import ExportToExcelButton from "../button/ButtonExcel";
-import DeleteUsers from "../deleteUser/deleteUser";
+import PrintPDFButton from "../pdfExport/pdfExport";
+// import DeleteUsers from "../deleteUser/deleteUser";
 
 const TableData = () => {
   const [dataPelanggan, setPelangganData] = useState([]);
@@ -70,7 +69,7 @@ const TableData = () => {
   return (
     <>
       <ExportToExcelButton />
-      {/* <DeleteUsers /> */}
+
       <Table variant="simple">
         <Thead>
           <Tr>
@@ -93,18 +92,11 @@ const TableData = () => {
                   <Button onClick={() => handleViewDetail(pelanggan)}>
                     View Detail
                   </Button>
-                  {/* <Button
-                    colorScheme="red"
-                    onClick={() => handleDeletePelanggan(pelanggan.id)}
-                  >
-                    Delete
-                  </Button> */}
                 </HStack>
               </Td>
             </Tr>
           ))}
       </Table>
-
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <ModalOverlay />
         <ModalContent>
@@ -138,6 +130,7 @@ const TableData = () => {
                       </Tr>
                     ))}
                   </Tbody>
+                  <PrintPDFButton />
                 </Table>
               </>
             )}
