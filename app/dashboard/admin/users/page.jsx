@@ -2,28 +2,9 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Td,
-  // Button,
-  // Modal,
-  // ModalOverlay,
-  // ModalContent,
-  // ModalHeader,
-  // ModalCloseButton,
-  // ModalBody,
-  // ModalFooter,
-  // useToast,
-  // HStack,
-  // VStack,
-  // FormControl,
-  // FormLabel,
-  // Input,
-} from "@chakra-ui/react";
+import { Table, Thead, Tr, Th, Td } from "@chakra-ui/react";
 import AddAcount from "../../../components/createUsers/Create";
+import DeleteUsers from "../../../components/deleteUser/deleteUser";
 
 const TableData = () => {
   const [users, setUsers] = useState([]);
@@ -49,6 +30,7 @@ const TableData = () => {
             <Th>Users ID</Th>
             <Th>Email</Th>
             <Th>Role</Th>
+            <Th>Action</Th>
           </Tr>
         </Thead>
         {Array.isArray(users) &&
@@ -57,6 +39,7 @@ const TableData = () => {
               <Td>{user.id}</Td>
               <Td>{user.email}</Td>
               <Td>{user.role}</Td>
+              <DeleteUsers id={user.id} />
             </Tr>
           ))}
       </Table>

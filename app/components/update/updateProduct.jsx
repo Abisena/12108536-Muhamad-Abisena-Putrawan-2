@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import axios from "axios";
 import {
   Drawer,
@@ -19,24 +18,18 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-export default function UpdateProduct() {
+export default function UpdateProduct({ id }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const [quantity, setQuantity] = useState("");
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = async (data) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.put(`/api/product`, {
-        id: data.id,
-        nama_produk: data.nama_produk,
-        price: parseInt(data.price),
-        quantity: parseInt(data.quantity),
+      const response = await axios.put(`/api/product/${id}`, {
+        quantity: parseInt(quantity),
       });
 
       if (response.status === 200) {
@@ -73,72 +66,28 @@ export default function UpdateProduct() {
 
   return (
     <>
-      <Button onClick={onOpen}>Open Update Product</Button>
+      <Button onClick={onOpen} mx={5} colorScheme="orange">
+        Update Product
+      </Button>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>Update Product</DrawerHeader>
           <DrawerBody>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={errors.id}>
-                <FormLabel htmlFor="id">ID</FormLabel>
-                <Input
-                  id="id"
-                  name="id"
-                  type="number"
-                  placeholder="ID"
-                  {...register("id", { required: "ID is required" })}
-                />
-                <FormErrorMessage>
-                  {errors.id && errors.id.message}
-                </FormErrorMessage>
-              </FormControl>
-
-              <FormControl isInvalid={errors.nama_produk}>
-                <FormLabel htmlFor="nama_produk">Nama Produk</FormLabel>
-                <Input
-                  id="nama_produk"
-                  name="nama_produk"
-                  type="text"
-                  placeholder="Nama Produk"
-                  {...register("nama_produk", {
-                    required: "Nama Produk is required",
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.nama_produk && errors.nama_produk.message}
-                </FormErrorMessage>
-              </FormControl>
-
-              <FormControl isInvalid={errors.price}>
-                <FormLabel htmlFor="price">Price</FormLabel>
-                <Input
-                  id="price"
-                  name="price"
-                  type="number"
-                  placeholder="Price"
-                  {...register("price", { required: "Price is required" })}
-                />
-                <FormErrorMessage>
-                  {errors.price && errors.price.message}
-                </FormErrorMessage>
-              </FormControl>
-
-              <FormControl isInvalid={errors.quantity}>
+            <form onSubmit={handleSubmit}>
+              <FormControl>
                 <FormLabel htmlFor="quantity">Quantity</FormLabel>
                 <Input
                   id="quantity"
                   name="quantity"
                   type="number"
                   placeholder="Quantity"
-                  {...register("quantity", {
-                    required: "Quantity is required",
-                  })}
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  required
                 />
-                <FormErrorMessage>
-                  {errors.quantity && errors.quantity.message}
-                </FormErrorMessage>
+                <FormErrorMessage></FormErrorMessage>
               </FormControl>
 
               <Button

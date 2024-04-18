@@ -61,7 +61,7 @@ export async function PUT(req) {
 
     return new Response(
       JSON.stringify({
-        msg: "Succes to Update Product",
+        msg: "Succes to Update Users",
         data: updateUsers,
       }),
       {
@@ -84,8 +84,8 @@ export async function PUT(req) {
 
 export async function DELETE(req) {
   try {
-    const { id } = req.json();
-    console.log(id);
+    const delData = req.params;
+    const { id } = delData;
     const deleteData = await db_cashier.users.delete({
       where: {
         id,

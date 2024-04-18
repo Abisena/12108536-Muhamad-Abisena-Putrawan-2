@@ -21,7 +21,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import ExportToExcelButton from "../button/ButtonExcel";
-import DeleteUsers from "../delete/deleteUser";
+import DeleteUsers from "../deleteUser/deleteUser";
 
 const TableData = () => {
   const [dataPelanggan, setPelangganData] = useState([]);

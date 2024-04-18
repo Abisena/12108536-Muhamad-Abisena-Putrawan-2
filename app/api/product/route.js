@@ -1,6 +1,6 @@
 import { db_cashier } from "../db";
 
-export async function POST (req) {
+export async function POST(req) {
   try {
     const productData = await req.json();
     const { nama_produk, price, quantity } = productData;
@@ -24,10 +24,9 @@ export async function POST (req) {
       status: 500,
     });
   }
-};
+}
 
-
-export async function GET () {
+export async function GET() {
   try {
     const getDataProduk = await db_cashier.product.findMany({});
 
@@ -43,12 +42,12 @@ export async function GET () {
       status: 500,
     });
   }
-};
+}
 
-export async function PUT(req){
+export async function PUT(req) {
   try {
     const getData = await req.json();
-    const { nama_produk, price, quantity, id } = getData;
+    const { quantity, id } = getData;
 
     if (!id) {
       console.log(id);
@@ -61,8 +60,6 @@ export async function PUT(req){
       },
 
       data: {
-        nama_produk,
-        price,
         quantity,
       },
     });
@@ -79,10 +76,9 @@ export async function PUT(req){
       status: 500,
     });
   }
-};
+}
 
-
-export async function DELETE(req){
+export async function DELETE(req) {
   try {
     const delData = await req.json();
     const { id } = delData;
@@ -93,7 +89,7 @@ export async function DELETE(req){
 
     const deletedData = await db_cashier.product.delete({
       where: {
-        id
+        id,
       },
     });
 
@@ -109,5 +105,4 @@ export async function DELETE(req){
       status: 500,
     });
   }
-};
-
+}

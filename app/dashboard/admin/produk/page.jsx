@@ -117,6 +117,8 @@ import axios from "axios";
 import { Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
 import ExportProductToExcel from "../../../components/buttonExcelProduct/Excel";
 import AddProductModal from "../../../components/modalProduct/modalProduk";
+import UpdateProduct from "../../../components/update/updateProduct";
+import DeleteProduct from "../../../components/deleteProduct/deleteProduct";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -164,12 +166,8 @@ const Product = () => {
               <Td>{product.price}</Td>
               <Td>{product.quantity}</Td>
               <Td>
-                <Button
-                  colorScheme="red"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  Delete
-                </Button>
+                <DeleteProduct id={product.id} />
+                <UpdateProduct id={product.id} />
               </Td>
             </Tr>
           ))}

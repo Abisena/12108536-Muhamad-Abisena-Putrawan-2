@@ -116,17 +116,18 @@ import { useState } from "react";
 import axios from "axios";
 import { Button, useToast } from "@chakra-ui/react";
 
-export default function DeleteUsers({ id }) {
+export default function DeleteProduct({ id }) {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  console.log(id);
 
   const onDelete = async () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.delete(`/api/users/${id}`);
+      const response = await axios.delete(`/api/product/${id}`);
 
-      if (response.ok) {
+      if (response) {
         toast({
           title: "Success",
           description: "User deleted successfully",
@@ -159,7 +160,7 @@ export default function DeleteUsers({ id }) {
 
   return (
     <Button colorScheme="red" isLoading={isLoading} onClick={onDelete}>
-      Delete Users
+      Delete Product
     </Button>
   );
 }
